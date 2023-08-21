@@ -5,7 +5,7 @@ const Blog = require('./models/blog')
 
 // Connect to MongoDB
 const dbURI = 'mongodb+srv://netninja:test1234@nodetuts.shduihs.mongodb.net/node-tuts?retryWrites=true&w=majority';
-mongoose.connect(dbURI, { useNewUrlParser: true, useUnifiedTopology: true })
+mongoose.connect(dbURI)
     .then((result) => {
         // Start the server after successfully connecting to the database
         app.listen(3000, () => {
@@ -55,7 +55,25 @@ app.get('/get-blogs',(req,res)=>{
         res.send(err);
     })
 })
-//to get a sinf
+//to get a single data
+app.get('/getsingledata',(req,res)=>{
+    Blog.findById('64e375ae594cc88898f0e211')
+    .then((result)=>{
+        res.send(result.title);
+    })
+})
+
+//to display in the index page and sorting
+app.get('/Everydata',(req,res)=>{
+    Blog.find().sort({createdAt:-1}) //-1 mean that arrange by descending order
+    .then((result)=>{
+        res.render('index',{title:'All Blogs',blogs:result})
+    })
+    .catch((err)=>{
+        console.log("Error in the console");
+    })
+    
+})
 
 app.use((req, res, next) => {
     console.log(req.hostname);
