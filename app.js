@@ -4,7 +4,7 @@ const app = express();
 const Blog = require('./models/blog')
 
 // Connect to MongoDB
-const dbURI = 'mongodb+srv://netninja:test1234@nodetuts.shduihs.mongodb.net/?retryWrites=true&w=majority';
+const dbURI = 'mongodb+srv://netninja:test1234@nodetuts.shduihs.mongodb.net/node-tuts?retryWrites=true&w=majority';
 mongoose.connect(dbURI, { useNewUrlParser: true, useUnifiedTopology: true })
     .then((result) => {
         // Start the server after successfully connecting to the database
@@ -27,22 +27,34 @@ app.use(express.static('public'));
 //for interactions with the database
 app.get('/add-blog', (req, res) => {
     const blog = new Blog({
-        title: 'Joseph',
-        snippet: 'Hey there how u doing its me', 
+        title: 'Stanley',
+        snippets: 'Hey there how u doing its me', 
         body: 'same'
     });
 
     // Save the new blog to the database
     blog.save()
-        .then(result => {
+        .then((result) => {
             console.log('Blog saved successfully:', result);
-            res.send('Blog added successfully');
+            
+            res.send(result);
         })
         .catch(error => {
             console.error('Error saving blog:', error);
             res.send('Error adding blog');
         });
 });
+//To retrieve the data from the database
+app.get('/get-blogs',(req,res)=>{
+    Blog.find()
+    .then((result)=>{
+        res.send(result);
+        console.log(result);
+    })
+    .catch((err)=>{
+        res.send(err);
+    })
+})
 
 app.use((req, res, next) => {
     console.log(req.hostname);
