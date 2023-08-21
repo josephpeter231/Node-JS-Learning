@@ -55,7 +55,7 @@ app.get('/get-blogs',(req,res)=>{
         res.send(err);
     })
 })
-//to 
+//to get a sinf
 
 app.use((req, res, next) => {
     console.log(req.hostname);
